@@ -13,17 +13,15 @@ import planeteH_2.Grille;
 import planeteH_2.GrilleVerificateur;
 import planeteH_2.Joueur;
 import planeteH_2.Position;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 
 public class JoueurArtificiel implements Joueur {
     private final GrilleVerificateur verificateur = new GrilleVerificateur();
     private final GrilleVerifX verificateurX = new GrilleVerifX();
-    private final Random random = new Random();
+    private long startDelais;
+    private long stepDelais;
     private int CurrentPlayer=1;
 
     /**
@@ -39,6 +37,7 @@ public class JoueurArtificiel implements Joueur {
      */
     @Override
     public Position getProchainCoup(Grille grille, int delais) {
+        startDelais = System.currentTimeMillis();
         CurrentPlayer = grille.nbLibre()%2+1;
         if (CurrentPlayer == 1 && isEmpty(grille)) {
             if(grille.get(6,2)==0){
@@ -46,7 +45,7 @@ public class JoueurArtificiel implements Joueur {
             }
             return new Position(0,0);
         }
-        return minimaxDecision(grille);
+        return minimaxDecision(grille, delais, startDelais);
     }
 
     @Override
@@ -54,22 +53,19 @@ public class JoueurArtificiel implements Joueur {
         return "Prénom1 Nom1 (CODE00000001)  et  Prénom2 Nom2 (CODE00000002)";
     }
 
-    public Position minimaxDecision(Grille grille){
+    public Position minimaxDecision(Grille grille, int delais, long diffDelais){
         HashMap<Grille,Integer> actions = generateGridMap(grille);
+        int tempDelais = (delais - (int)(System.currentTimeMillis() - diffDelais))/actions.size();
         for(HashMap.Entry<Grille, Integer> action : actions.entrySet()){
             Grille current = action.getKey();
-            action.setValue(minValue(current,Integer.MIN_VALUE,Integer.MAX_VALUE, 3));
-
-//                System.out.println("Value of this grid:" + action.getValue());
-//            System.out.println();
-//                printGrid(current);
+            action.setValue(minValue(current,Integer.MIN_VALUE,Integer.MAX_VALUE, tempDelais, System.currentTimeMillis()));
         }
 
 
         return getMove(grille,getMaxGrid(actions));
     }
 
-    public int maxValue(Grille grille, int alpha, int beta, int depth){
+    public int maxValue(Grille grille, int alpha, int beta, int delais, long diffDelais){
         int winner = getWinner(grille);
         if(winner != 0){
             return getWinnerScore(winner);
@@ -77,14 +73,15 @@ public class JoueurArtificiel implements Joueur {
             return 0;
         }
 
-        if(cutoffTest(depth)){
+        if(cutoffTest(delais)){
             return getUtilityOfGrid(grille);
         }
 
         int value = Integer.MIN_VALUE;
         ArrayList<Grille> actions = generateNextGrids(grille);
+        int tempDelais = (delais - (int)(System.currentTimeMillis() - diffDelais))/actions.size();
         for(Grille action : actions){
-            value = Math.max(value, minValue(action, alpha, beta, --depth));
+            value = Math.max(value, minValue(action, alpha, beta, tempDelais, System.currentTimeMillis()));
             if (value >= beta){
                 return value;
             }
@@ -93,7 +90,8 @@ public class JoueurArtificiel implements Joueur {
         return value;
     }
 
-    public int minValue(Grille grille, int alpha, int beta, int depth){
+    public int minValue(Grille grille, int alpha, int beta, int delais, long diffDelais){
+        stepDelais = System.currentTimeMillis();
         int winner = getWinner(grille);
         if(winner != 0){
             return getWinnerScore(winner);
@@ -101,16 +99,15 @@ public class JoueurArtificiel implements Joueur {
             return 0;
         }
 
-        if(cutoffTest(depth)){
-//            System.out.println();
-//            printGrid(grille);
+        if(cutoffTest(delais)){
             return getUtilityOfGrid(grille);
         }
 
         int value = Integer.MAX_VALUE;
         ArrayList<Grille> actions = generateNextGrids(grille);
+        int tempDelais = (delais - (int)(System.currentTimeMillis() - diffDelais))/actions.size();
         for(Grille action: actions){
-            value = Math.min(value, maxValue(action, alpha, beta, --depth));
+            value = Math.min(value, maxValue(action, alpha, beta, tempDelais, System.currentTimeMillis()));
             if(value <= alpha)
                 return value;
             beta = Math.min(beta,value);
