@@ -14,8 +14,6 @@ public class GrilleVerifX {
     protected int lastValue = 0;
     protected int count = 0;
     protected int quiGagne = 0;
-    protected boolean ouvertAvant = false;
-    protected boolean ouvertApres = false;
     protected int biggestStreak = 1;
     protected int[] result = {
             0, //p1 Twos 0
@@ -37,56 +35,6 @@ public class GrilleVerifX {
         etats.add(0);
         etats.add(0);
     }
-//    public int[] trouveOuvert(Grille grille) {
-//        quiGagne = biggestStreak = count = lastValue = 0; // reset status
-//        int[] result = {quiGagne, biggestStreak};
-//
-//        // horizontal
-//        for (int l = 0; l < grille.getData().length; l++) {
-//            for (int c = 0; c < grille.getData()[0].length; c++) {
-//                checkOuvert(grille.getData()[l][c], result);
-//            }
-//            checkOuvert(0, result);
-//        }
-//
-//        // vertical
-//        for (int c = 0; c < grille.getData()[0].length; c++) {
-//            for (int l = 0; l < grille.getData().length; l++) {
-//                checkOuvert(grille.getData()[l][c], result);
-//            }
-//            checkOuvert(0, result);
-//        }
-//
-//        // Diagonal \\\\\\\
-//        for (int c = -grille.getData().length; c < grille.getData()[0].length; c++) {
-//            int c2 = c;
-//            int l = 0;
-//            if (c2 < 0) {
-//                l = -c2;
-//                c2 = 0;
-//            }
-//            for (; c2 < grille.getData()[0].length && l < grille.getData().length; c2++, l++) {
-//                checkOuvert(grille.getData()[l][c2], result);
-//            }
-//            checkOuvert(0, result);
-//        }
-//
-//        // Diagonal //////
-//        for (int c = -grille.getData().length; c < grille.getData()[0].length; c++) {
-//            int c2 = c;
-//            int l = grille.getData().length - 1;
-//            if (c2 < 0) {
-//                l += c2;
-//                c2 = 0;
-//            }
-//            for (; c2 < grille.getData()[0].length && l >= 0; c2++, l--) {
-//                checkOuvert(grille.getData()[l][c2], result);
-//            }
-//            checkOuvert(0, result);
-//        }
-//
-//        return result;
-//    }
 
     public int[] trouveSuites(Grille grille) {
         quiGagne = biggestStreak = count = lastValue = 0; // reset status
@@ -138,66 +86,6 @@ public class GrilleVerifX {
 
         return table;
     }
-
-
-
-//    private void checkOuvert(int value, int []result) {
-//        if (value == 0) {
-//            if (count == 0)
-//                ouvertAvant = true;
-//            if (count > 0)
-//                ouvertApres = true;
-//        }
-//        if(value != 0 && value != lastValue){
-//            ouvertAvant=true;
-//        }
-//        if (value == lastValue) {
-//            count++;
-//        } else {
-//            if (lastValue > 0 && lastValue < 3 && (compteExact ? count == 5 : count >= 5)) {
-//                quiGagne = lastValue;
-//                if (5 > biggestStreak) {
-//                    biggestStreak = 5;
-//                    result[0]=quiGagne;
-//                    result[1]=biggestStreak;
-//                }
-//            }
-//            if (lastValue > 0 && lastValue < 3 && (compteExact ? count == 4 : count >= 4) && (ouvertApres || ouvertAvant)) {
-//                quiGagne = lastValue;
-//                if (4 > biggestStreak){
-//                    biggestStreak = 4;
-//                    result[0]=quiGagne;
-//                    result[1]=biggestStreak;
-//                }
-//            }
-//            if (lastValue > 0 && lastValue < 3 && (compteExact ? count == 3 : count >= 3) && (ouvertApres || ouvertAvant)) {
-//                quiGagne = lastValue;
-//                if (3 > biggestStreak){
-//                    biggestStreak = 3;
-//                    result[0]=quiGagne;
-//                    result[1]=biggestStreak;
-//                }
-//            }
-//            if (lastValue > 0 && lastValue < 3 && (compteExact ? count == 2 : count >= 2) && (ouvertApres || ouvertAvant)) {
-//                quiGagne = lastValue;
-//                if (2 > biggestStreak){
-//                    biggestStreak = 2;
-//                    result[0]=quiGagne;
-//                    result[1]=biggestStreak;
-//                }
-//            }
-//            if (lastValue > 0 && lastValue < 3 && (compteExact ? count == 1 : count >= 1) && (ouvertApres && ouvertAvant)) {
-//                quiGagne = lastValue;
-//                if (1 > biggestStreak){
-//                    biggestStreak = 1;
-//                    result[0]=quiGagne;
-//                    result[1]=biggestStreak;
-//                }
-//            }
-//            count = 1;
-//            lastValue = value;
-//        }
-//    }
 
     private int [] check(int value, int [] table) {
         etats.remove();

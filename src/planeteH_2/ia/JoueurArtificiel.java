@@ -14,7 +14,6 @@ import planeteH_2.GrilleVerificateur;
 import planeteH_2.Joueur;
 import planeteH_2.Position;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -23,7 +22,6 @@ import java.util.Random;
 public class JoueurArtificiel implements Joueur {
     private final GrilleVerificateur verificateur = new GrilleVerificateur();
     private final GrilleVerifX verificateurX = new GrilleVerifX();
-    private final Random random = new Random();
     private int CurrentPlayer=1;
 
     /**
@@ -58,11 +56,7 @@ public class JoueurArtificiel implements Joueur {
         HashMap<Grille,Integer> actions = generateGridMap(grille);
         for(HashMap.Entry<Grille, Integer> action : actions.entrySet()){
             Grille current = action.getKey();
-            action.setValue(minValue(current,Integer.MIN_VALUE,Integer.MAX_VALUE, 3));
-
-//                System.out.println("Value of this grid:" + action.getValue());
-//            System.out.println();
-//                printGrid(current);
+            action.setValue(minValue(current,Integer.MIN_VALUE,Integer.MAX_VALUE, 4));
         }
 
 
@@ -102,8 +96,6 @@ public class JoueurArtificiel implements Joueur {
         }
 
         if(cutoffTest(depth)){
-//            System.out.println();
-//            printGrid(grille);
             return getUtilityOfGrid(grille);
         }
 
@@ -152,7 +144,6 @@ public class JoueurArtificiel implements Joueur {
             }
         }
 
-//        System.out.println("Value of action taken:"+maxEntry.getValue());
         return maxEntry.getKey();
     }
 
