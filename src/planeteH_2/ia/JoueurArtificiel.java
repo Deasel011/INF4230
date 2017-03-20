@@ -40,7 +40,12 @@ public class JoueurArtificiel implements Joueur {
     @Override
     public Position getProchainCoup(Grille grille, int delais) {
         CurrentPlayer = grille.nbLibre()%2+1;
-//        System.out.println(CurrentPlayer);
+        if (CurrentPlayer == 1 && isEmpty(grille)) {
+            if(grille.get(6,2)==0){
+                return new Position(6,2);
+            }
+            return new Position(0,0);
+        }
         return minimaxDecision(grille);
     }
 
@@ -183,14 +188,6 @@ public class JoueurArtificiel implements Joueur {
         return grilles;
     }
 
-//    public int calculateGridUtilityValue(Grille grille){
-//        int[] hasStreak = verificateurX.trouveOuvert(grille);
-//        if(hasStreak[0]!=0){
-//            return getInARowUtilityOfGrid(grille, hasStreak[1], hasStreak[0]);
-//        }
-//        return 0;
-//    }
-
     public int getUtilityOfGrid(Grille grille){
         int [] table =verificateurX.trouveSuites(grille);
         int result = 0;
@@ -216,61 +213,6 @@ public class JoueurArtificiel implements Joueur {
         }
         return result;
     }
-
-//    public int getWinnerUtilityOfGrid(Grille grille){
-////        System.out.println(CurrentPlayer);
-//        if(CurrentPlayer == 1){
-//            if(grille.nbLibre()%2==0){
-////                System.out.println("Winner utility: 100");
-//                return 100;
-//            }else{
-////                System.out.println("Winner utility: -100");
-//                return 90;
-//            }
-//        }else{
-//            if(grille.nbLibre()%2==1){
-////                System.out.println("Winner utility: 100");
-//                return 100;
-//            }else{
-////                System.out.println("Winner utility: -100");
-//                printGrid(grille);
-//                return 90;
-//            }
-//        }
-//    }
-
-//    public int getInARowUtilityOfGrid(Grille grille, int biggestStreak, int playerWhoHasStreak){
-////        int[] returnVal ={0,2,4,6,8,10};
-////        if(CurrentPlayer == 1){
-////            return (playerWhoHasStreak==1)?returnVal[biggestStreak]:returnVal[biggestStreak]-1;
-////        }else{
-////            return (playerWhoHasStreak==2)?returnVal[biggestStreak]:returnVal[biggestStreak]-1;
-////        }
-//        int[] returnVal ={0,20,40,60,80,100};
-//        if(CurrentPlayer == 1){
-//            if(grille.nbLibre()%2==0){
-////                System.out.println(biggestStreak +" with Player1LoseStreak :" + (-returnVal[biggestStreak]));
-////                printGrid(grille);
-//                return -returnVal[biggestStreak];
-//            }else{
-////                System.out.println(biggestStreak +" with Player1WinStreak :" + (returnVal[biggestStreak]));
-////                printGrid(grille);
-//                return returnVal[biggestStreak];
-//            }
-//        }else{
-////            System.out.println(CurrentPlayer);
-//            if(grille.nbLibre()%2==1){
-////                System.out.println(biggestStreak +" with Player2WinStreak :" + (returnVal[biggestStreak]));
-////                printGrid(grille);
-//                return returnVal[biggestStreak];
-//            }else{
-////                System.out.println(biggestStreak +" with Player2LoseStreak :" + (-returnVal[biggestStreak]));
-////                printGrid(grille);
-//                return -returnVal[biggestStreak];
-//            }
-//        }
-//    }
-
 
     public boolean isTerminalState(Grille grille){
         return grille.nbLibre()==0;
@@ -336,5 +278,16 @@ public class JoueurArtificiel implements Joueur {
 
     private boolean tokAtLine(int ligne,int colonne,Grille grille){
         return grille.get(ligne,colonne)==1||grille.get(ligne,colonne)==2;
+    }
+
+    private boolean isEmpty(Grille grille){
+        for(int i=0;i<grille.getData().length;i++){
+            for(int j=0;j<grille.getData()[0].length;j++){
+                if(grille.get(i,j)>0 && grille.get(i,j)<3){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
