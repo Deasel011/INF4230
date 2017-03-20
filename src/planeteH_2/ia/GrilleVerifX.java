@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Created by pdesl on 2017-03-20.
+ * Nice
  */
 public class GrilleVerifX {
     protected int nombreGagnant = 5;
@@ -64,7 +64,13 @@ public class GrilleVerifX {
                 l = -c2;
                 c2 = 0;
             }
+            int oldL = l;
             for (; c2 < grille.getData()[0].length && l < grille.getData().length; c2++, l++) {
+                if(Math.abs(l-oldL)>=2){
+                    etats.remove();
+                    etats.add(42);
+                }
+                oldL = l;
                 table = check(grille.getData()[l][c2], table);
             }
             table = check(0,table);
@@ -78,7 +84,13 @@ public class GrilleVerifX {
                 l += c2;
                 c2 = 0;
             }
+            int oldL = l;
             for (; c2 < grille.getData()[0].length && l >= 0; c2++, l--) {
+                if(Math.abs(l-oldL)>=2){
+                    etats.remove();
+                    etats.add(42);
+                }
+                oldL=l;
                 table = check(grille.getData()[l][c2], table);
             }
             table = check(0, table);
@@ -256,8 +268,6 @@ public class GrilleVerifX {
             list[i]=etat;
             i++;
         }
-        System.out.println();
-        System.out.println("List:"+list[0]+list[1]+list[2]+list[3]+list[4]);
 
         if (list[0] == sampleOne[0]
                 && list[1] == sampleOne[1]

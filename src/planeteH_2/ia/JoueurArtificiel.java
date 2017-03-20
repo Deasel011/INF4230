@@ -5,8 +5,8 @@ package planeteH_2.ia;
  *
  * Vous pouvez ajouter d'autres classes sous le package planeteH_2.ia.
  *
- * Prénom Nom    (CODE00000001)
- * Prénom Nom    (CODE00000002)
+ * Antoine LeBel (LEBA23068603)
+ * Philippe Deslongchamps (DESP08089202)
  */
 
 import planeteH_2.Grille;
@@ -21,7 +21,6 @@ public class JoueurArtificiel implements Joueur {
     private final GrilleVerificateur verificateur = new GrilleVerificateur();
     private final GrilleVerifX verificateurX = new GrilleVerifX();
     private long startDelais;
-    private long stepDelais;
     private int CurrentPlayer=1;
 
     /**
@@ -50,7 +49,7 @@ public class JoueurArtificiel implements Joueur {
 
     @Override
     public String getAuteurs() {
-        return "Prénom1 Nom1 (CODE00000001)  et  Prénom2 Nom2 (CODE00000002)";
+        return "Antoine LeBel (LEBA23068603)  et  Philippe Deslongchamps (DESP08089202)";
     }
 
     public Position minimaxDecision(Grille grille, int delais, long diffDelais){
@@ -91,7 +90,6 @@ public class JoueurArtificiel implements Joueur {
     }
 
     public int minValue(Grille grille, int alpha, int beta, int delais, long diffDelais){
-        stepDelais = System.currentTimeMillis();
         int winner = getWinner(grille);
         if(winner != 0){
             return getWinnerScore(winner);
@@ -149,7 +147,6 @@ public class JoueurArtificiel implements Joueur {
             }
         }
 
-//        System.out.println("Value of action taken:"+maxEntry.getValue());
         return maxEntry.getKey();
     }
 
@@ -171,7 +168,6 @@ public class JoueurArtificiel implements Joueur {
         int largeur=grille.getData()[0].length;
 
         ArrayList<Integer> casesvides=genererCasesVide(grille);
-        int index=0;
         for(int casevide : casesvides){
             if(hasNearbyToken((casevide-casevide%largeur)/largeur,casevide%largeur, grille)) {
                 Grille temp = grille.clone();
@@ -216,7 +212,7 @@ public class JoueurArtificiel implements Joueur {
     }
 
     public boolean cutoffTest(int testValue){
-        if(testValue <=0){
+        if(testValue <=2){
             return true;
         }else
             return false;
